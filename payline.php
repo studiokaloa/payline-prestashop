@@ -534,11 +534,12 @@ class payline extends PaymentModule
         $this->context->smarty->assign(array(
             'subscriptionControllerLink' => $this->context->link->getModuleLink('payline', 'subscriptions', array(), true),
         ));
-        if (version_compare(_PS_VERSION_, '1.7.0.0', '>=')) {
+        /*if (version_compare(_PS_VERSION_, '1.7.0.0', '>=')) {
             $output .= $this->context->smarty->fetch($this->local_path.'views/templates/hook/1.7/customer_account.tpl');
         } else {
             $output .= $this->display(__FILE__, 'customer_account.tpl');
-        }
+        /*}*/
+        $output .= $this->display('payline', 'customer_account.tpl');
 
         return $output;
     }
@@ -636,11 +637,13 @@ class payline extends PaymentModule
                     'allowRefund' => $allowRefund,
                     'allowReset' => $allowReset,
                 ));
-                if (version_compare(_PS_VERSION_, '1.7.0.0', '>=')) {
+                /*if (version_compare(_PS_VERSION_, '1.7.0.0', '>=')) {
+                    //$output .= $this->context->smarty->fetch($this->local_path.'views/templates/hook/admin_order.tpl');
                     $output .= $this->context->smarty->fetch($this->local_path.'views/templates/hook/admin_order.tpl');
                 } else {
                     $output .= $this->display(__FILE__, 'admin_order.tpl');
-                }
+                }*/
+                $output .= $this->display('payline', 'admin_order.tpl');
             }
         }
 
@@ -766,7 +769,8 @@ class payline extends PaymentModule
             'payline_transaction_id' => $idTransaction,
         ));
 
-        return $this->display(__FILE__, 'payment_return.tpl');
+        //return $this->display(__FILE__, 'payment_return.tpl');
+        return $this->display('payline', 'admin_order.tpl');
     }
 
     /**
@@ -1032,7 +1036,8 @@ class payline extends PaymentModule
                         'payline_href' => 'javascript:Payline.Api.init()',
                     ));
 
-                    $paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment.tpl');
+                    //$paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment.tpl');
+                    $paymentReturn .= $this->display('payline', 'views/templates/hook/payment.tpl');
                 }
             } elseif ($uxMode == 'redirect') {
                 list($paymentRequest, $paymentRequestParams)= PaylinePaymentGateway::createPaymentRequest($this->context, PaylinePaymentGateway::WEB_PAYMENT_METHOD);
@@ -1042,7 +1047,8 @@ class payline extends PaymentModule
                         'payline_href' => $paymentRequest['redirectURL'],
                     ));
 
-                    $paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment.tpl');
+                    //$paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment.tpl');
+                    $paymentReturn .= $this->display('payline', 'views/templates/hook/payment.tpl');
                 }
             } else {
                 $this->smarty->assign(array(
@@ -1075,7 +1081,8 @@ class payline extends PaymentModule
                         'payline_token' => $paymentRequest['token'],
                         'payline_assets' => PaylinePaymentGateway::getAssetsToRegister(),
                     ));
-                    $paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_nx.tpl');
+                    //$paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_nx.tpl');
+                    $paymentReturn .= $this->display('payline', 'views/templates/hook/payment_nx.tpl');
                 }
             } elseif ($uxMode == 'redirect') {
                 list($paymentRequest, $paymentRequestParams) = PaylinePaymentGateway::createPaymentRequest($this->context, PaylinePaymentGateway::RECURRING_PAYMENT_METHOD);
@@ -1085,14 +1092,16 @@ class payline extends PaymentModule
                         'payline_href' => $paymentRequest['redirectURL'],
                     ));
 
-                    $paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_nx.tpl');
+                    //$paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_nx.tpl');
+                    $paymentReturn .= $this->display('payline', 'views/templates/hook/payment_nx.tpl');
                 }
             } else {
                 $this->smarty->assign(array(
                     'payline_href' => $this->context->link->getModuleLink($this->name, 'payment_nx', array(), true),
                 ));
 
-                $paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_nx.tpl');
+                //$paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_nx.tpl');
+                $paymentReturn .= $this->display('payline', 'views/templates/hook/payment_nx.tpl');
             }
         }
 
@@ -1135,7 +1144,8 @@ class payline extends PaymentModule
                         }
                     }
                     if ($cartIntegrity) {
-                        $paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_sub.tpl');
+                        //$paymentReturn .= $this->display(__FILE__, 'views/templates/hook/payment_sub.tpl');
+                        $paymentReturn .= $this->display('payline', 'views/templates/hook/payment_sub.tpl');
                     }
                 } else {
                     // Exclusive method, check if products in cart are correct
@@ -1176,7 +1186,8 @@ class payline extends PaymentModule
                         }
                     } elseif ($cartIntegrity && $cartFullIntegrity) {
                         // We have to hide any other methods...
-                        $paymentReturn = $this->display(__FILE__, 'views/templates/hook/payment_sub.tpl');
+                        //$paymentReturn = $this->display(__FILE__, 'views/templates/hook/payment_sub.tpl');
+                        $paymentReturn = $this->display('payline', 'views/templates/hook/payment_sub.tpl');
                     }
                 }
             }
