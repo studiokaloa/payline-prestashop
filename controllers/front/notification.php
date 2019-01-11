@@ -17,6 +17,11 @@ class paylineNotificationModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
 
+        if (version_compare(_PS_VERSION_, '1.7.0.0', '>=')) {
+            $this->setTemplate('module:payline/views/templates/front/1.7/notification.tpl');
+        } else {
+            $this->setTemplate('1.6/notification.tpl');
+        }
         $notificationType = Tools::getValue('notificationType');
 
         if ($notificationType == 'WEBTRS' && Tools::getValue('token')) {
