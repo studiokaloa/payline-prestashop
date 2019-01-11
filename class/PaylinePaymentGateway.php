@@ -157,6 +157,7 @@ class PaylinePaymentGateway
                 return Tools::jsonDecode(base64_decode($posCache), true);
             }
         }
+
         if (self::checkCredentials() && isset(self::$merchantSettings['listPointOfSell']) && is_array(self::$merchantSettings['listPointOfSell']) && isset(self::$merchantSettings['listPointOfSell']['pointOfSell']) && is_array(self::$merchantSettings['listPointOfSell']['pointOfSell'])) {
             // Save POS in cache
             Configuration::updateValue('PAYLINE_POS_CACHE', base64_encode(Tools::jsonEncode(self::$merchantSettings['listPointOfSell']['pointOfSell'])));
@@ -177,7 +178,7 @@ class PaylinePaymentGateway
         $posList = self::getPointOfSales();
         foreach ($posList as $pos) {
             if (trim($pos['label']) == $posLabel) {
-                return $posLabel;
+                return $pos;
             }
         }
 
